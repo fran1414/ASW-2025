@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interação com Animais</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            background-color: #fff5e6;
+            background-image: url('https://www.transparenttextures.com/patterns/footprints.png');
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #ff5733;
+            text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(135deg, #ffcc70, #ff5f6d);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+            width: 50%;
+            margin: auto;
+            border: 10px solid #ff5733;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        select, input {
+            font-size: 18px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 3px solid #ff5733;
+            background-color: #fff;
+            margin: 15px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .animal-info {
+            margin-top: 30px;
+            padding: 25px;
+            border: 4px solid #ff5733;
+            border-radius: 20px;
+            background-color: #fff7e6;
+            text-align: center;
+            width: 300px;
+            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .animal-info::before {
+            content: '🐾';
+            font-size: 30px;
+            position: absolute;
+            top: -20px;
+            left: 10px;
+        }
+
+        .animal-info::after {
+            content: '🐾';
+            font-size: 30px;
+            position: absolute;
+            bottom: -20px;
+            right: 10px;
+        }
+
+        .animal-display {
+            font-weight: bold;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .animal-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            transform: scale(1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .animal-img:hover {
+            transform: scale(1.1);
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ff5733, #ffcc70);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 12px;
+            box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #ff4500, #ffa500);
+            transform: scale(1.1);
+            box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Crie seu Animal Interativo</h1>
+
+    <div class="container">
+        <!-- Step 1: Escolher animal -->
+        <div id="step1" class="step active">
+            <h2>Escolha um Animal</h2>
+            <select id="animalSelect" onchange="mostrarImagemAnimal()">
+                <option value="Cachorro">Cachorro</option>
+                <option value="Gato">Gato</option>
+                <option value="Passaro">Pássaro</option>
+                <option value="Peixe">Peixe</option>
+                <option value="Cavalo">Cavalo</option>
+            </select>
+            <br>
+            <img id="animalImage" class="animal-img" src="" alt="Imagem do animal" style="display:none;">
+            <br>
+            <button onclick="nextStep()">Próximo</button>
+        </div>
+
+        <!-- Step 2: Definir Nome e Cor -->
+        <div id="step2" class="step">
+            <h2>Personalize seu Animal</h2>
+            <input type="text" id="animalNome" placeholder="Digite um nome">
+            <input type="color" id="animalCor">
+            <br>
+            <button onclick="nextStep()">Criar Animal</button>
+        </div>
+
+        <!-- Step 3: Interação -->
+        <div id="step3" class="step">
+            <h2>Seu Animal</h2>
+            <div class="animal-info">
+                <p class="animal-display" id="animalDisplay"></p>
+                <button onclick="fazerSom()">Ouvir Som</button>
+                <button onclick="mover()">Ver Movimento</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class Animal {
+            constructor(nome, cor) {
+                this._nome = nome;
+                this._cor = cor;
+            }
+
+            get nome() {
+                return this._nome;
+            }
+
+            get cor() {
+                return this._cor;
+            }
+
+            fazerSom() {
+                return "Este animal faz um som!";
+            }
+
+            mover() {
+                return "O animal está se movendo!";
+            }
+        }
+
+        class Cachorro extends Animal {
+            fazerSom() {
+                let audio = new Audio('/cachorro.m4a');
+                audio.play();
+                return `${this.nome} late: Au Au!`;
+            }
+
+            mover() {
+                return `${this.nome} está correndo! 🐾`;
+            }
+        }
+
+        class Gato extends Animal {
+            fazerSom() {
+                let audio = new Audio('/gato.m4a');
+                audio.play();
+                return `${this.nome} mia: Miau!`;
+            }
+
+            mover() {
+                return `${this.nome} está saltando! 🐱`;
+            }
+        }
+
+        class Passaro extends Animal {
+            fazerSom() {
+                let audio = new Audio('/pássaros.m4a');
+                audio.play();
+                return `${this.nome} canta: Piu Piu!`;
+            }
+
+            mover() {
+                return `${this.nome} está voando! 🕊️`;
+            }
+        }
+
+        class Peixe extends Animal {
+            fazerSom() {
+                return `${this.nome} não faz som! 🤫`;
+            }
+
+            mover() {
+                return `${this.nome} está nadando! 🐟`;
+            }
+        }
+
+        class Cavalo extends Animal {
+            fazerSom() {
+                let audio = new Audio('/cavalo.m4a');
+                audio.play();
+                return `${this.nome} relincha: Hiiiiin!`;
+            }
+
+            mover() {
+                return `${this.nome} está galopando! 🐎`;
+            }
+        }
+
+        let currentStep = 1;
+        let animalEscolhido;
+
+        function nextStep() {
+            document.getElementById(`step${currentStep}`).classList.remove("active");
+            currentStep++;
+            document.getElementById(`step${currentStep}`).classList.add("active");
+
+            if (currentStep === 3) {
+                criarAnimal();
+            }
+        }
+
+        function criarAnimal() {
+            let nome = document.getElementById("animalNome").value;
+            let cor = document.getElementById("animalCor").value;
+            let tipo = document.getElementById("animalSelect").value;
+
+            switch (tipo) {
+                case "Cachorro":
+                    animalEscolhido = new Cachorro(nome, cor);
+                    break;
+                case "Gato":
+                    animalEscolhido = new Gato(nome, cor);
+                    break;
+                case "Passaro":
+                    animalEscolhido = new Passaro(nome, cor);
+                    break;
+                case "Peixe":
+                    animalEscolhido = new Peixe(nome, cor);
+                    break;
+                case "Cavalo":
+                    animalEscolhido = new Cavalo(nome, cor);
+                    break;
+            }
+
+            document.getElementById("animalDisplay").innerHTML = 
+                `<span style="color:${cor}">${animalEscolhido.nome}</span> (${tipo}) foi criado!`;
+        }
+
+        function fazerSom() {
+            alert(animalEscolhido.fazerSom());
+        }
+
+        function mover() {
+            alert(animalEscolhido.mover());
+        }
+
+        function mostrarImagemAnimal() {
+            const animal = document.getElementById("animalSelect").value;
+            const image = document.getElementById("animalImage");
+
+            switch (animal) {
+                case "Cachorro":
+                    image.src = "https://www.example.com/cachorro.jpg"; // Substitua com a URL da imagem real
+                    break;
+                case "Gato":
+                    image.src = "https://www.example.com/gato.jpg"; // Substitua com a URL da imagem real
+                    break;
+                case "Passaro":
+                    image.src = "https://www.example.com/passaro.jpg"; // Substitua com a URL da imagem real
+                    break;
+                case "Peixe":
+                    image.src = "https://www.example.com/peixe.jpg"; // Substitua com a URL da imagem real
+                    break;
+                case "Cavalo":
+                    image.src = "https://www.example.com/cavalo.jpg"; // Substitua com a URL da imagem real
+                    break;
+            }
+
+            image.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>

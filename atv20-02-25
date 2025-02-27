@@ -1,332 +1,214 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interação com Animais</title>
-    <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            text-align: center;
-            background-color: #fff5e6;
-            background-image: url('https://www.transparenttextures.com/patterns/footprints.png');
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crie Seu Animal Amigo!</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABDo+4+O4+KnujsnCR+d3v91W5vXd0RkVkk/q/tKtwQPMtZ4Zn4G4g5w" crossorigin="anonymous">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #8B4513; /* Marrom escuro */
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+    }
 
-        h1 {
-            font-size: 36px;
-            color: #ff5733;
-            text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
+    h1 {
+      color: #FFD700; /* Dourado */
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
 
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: linear-gradient(135deg, #ffcc70, #ff5f6d);
-            padding: 30px;
-            border-radius: 25px;
-            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
-            width: 50%;
-            margin: auto;
-            border: 10px solid #ff5733;
-        }
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #FFF3E0; /* Laranja claro */
+      padding: 20px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+    }
 
-        .step {
-            display: none;
-        }
+    h2 {
+      color: #D2691E; /* Chocolate */
+    }
 
-        .active {
-            display: block;
-        }
+    label {
+      font-size: 1.1em;
+      color: #8B4513; /* Marrom escuro */
+    }
 
-        select, input {
-            font-size: 18px;
-            padding: 12px;
-            border-radius: 8px;
-            border: 3px solid #ff5733;
-            background-color: #fff;
-            margin: 15px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
+    input, select {
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 1em;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid #A0522D; /* Marrom médio */
+    }
 
-        .animal-info {
-            margin-top: 30px;
-            padding: 25px;
-            border: 4px solid #ff5733;
-            border-radius: 20px;
-            background-color: #fff7e6;
-            text-align: center;
-            width: 300px;
-            box-shadow: 8px 8px 15px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
+    .step {
+      margin-bottom: 20px;
+    }
 
-        .animal-info::before {
-            content: '🐾';
-            font-size: 30px;
-            position: absolute;
-            top: -20px;
-            left: 10px;
-        }
+    #animal-container {
+      margin-top: 30px;
+    }
 
-        .animal-info::after {
-            content: '🐾';
-            font-size: 30px;
-            position: absolute;
-            bottom: -20px;
-            right: 10px;
-        }
+    #animal-interaction button {
+      padding: 10px 20px;
+      background-color: #FF8C00; /* Laranja escuro */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin: 10px;
+      cursor: pointer;
+    }
 
-        .animal-display {
-            font-weight: bold;
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 15px;
-        }
+    #animal-interaction button:hover {
+      background-color: #D2691E; /* Chocolate */
+    }
 
-        .animal-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 15px;
-            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
-            margin-top: 20px;
-            transform: scale(1);
-            transition: transform 0.3s ease-in-out;
-        }
+    .btn-info {
+      background-color: #FF4500; /* Laranja avermelhado */
+      border-radius: 5px;
+      color: white;
+    }
 
-        .animal-img:hover {
-            transform: scale(1.1);
-        }
+    .btn-info:hover {
+      background-color: #D2691E; /* Chocolate */
+    }
 
-        button {
-            margin-top: 15px;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            background: linear-gradient(135deg, #ff5733, #ffcc70);
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            border-radius: 12px;
-            box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease-in-out, box-shadow 0.3s;
-        }
+    .btn-success {
+      background-color: #CD853F; /* Peru */
+      border-radius: 5px;
+    }
 
-        button:hover {
-            background: linear-gradient(135deg, #ff4500, #ffa500);
-            transform: scale(1.1);
-            box-shadow: 6px 6px 18px rgba(0, 0, 0, 0.4);
-        }
+    .btn-success:hover {
+      background-color: #A0522D; /* Marrom médio */
+    }
 
-        button:active {
-            transform: scale(0.95);
-        }
+    .btn-secondary {
+      background-color: #8B4513; /* Marrom escuro */
+      border-radius: 5px;
+    }
 
-        @media (max-width: 768px) {
-            .container {
-                width: 80%;
-            }
-        }
-    </style>
+    .btn-secondary:hover {
+      background-color: #654321; /* Marrom mais escuro */
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .step {
+      animation: fadeIn 1s ease-out;
+    }
+
+    .bs-stepper-header {
+      margin-bottom: 30px;
+    }
+
+    .bs-stepper-circle {
+      background-color: #FF8C00; /* Laranja escuro */
+      color: #fff;
+    }
+
+    .bs-stepper-label {
+      color: #8B4513; /* Marrom escuro */
+    }
+  </style>
 </head>
 <body>
+  <h1>Bem-vindo ao Criador de Animais!</h1>
 
-    <h1>Crie seu Animal Interativo</h1>
+  <div class="container">
+    <div class="bs-stepper" id="stepper1">
+      <div class="bs-stepper-header" role="tablist">
+        <div class="step" data-bs-target="#step1">
+          <button type="button" class="step-trigger">
+            <span class="bs-stepper-circle">🦴</span>
+            <span class="bs-stepper-label">Escolha o Animal</span>
+          </button>
+        </div>
+        <div class="step" data-bs-target="#step2">
+          <button type="button" class="step-trigger">
+            <span class="bs-stepper-circle">🦴</span>
+            <span class="bs-stepper-label">Nome e Cor</span>
+          </button>
+        </div>
+        <div class="step" data-bs-target="#step3">
+          <button type="button" class="step-trigger">
+            <span class="bs-stepper-circle">🦴</span>
+            <span class="bs-stepper-label">Confirmar Animal</span>
+          </button>
+        </div>
+      </div>
 
-    <div class="container">
-        <!-- Step 1: Escolher animal -->
-        <div id="step1" class="step active">
-            <h2>Escolha um Animal</h2>
-            <select id="animalSelect" onchange="mostrarImagemAnimal()">
-                <option value="Cachorro">Cachorro</option>
-                <option value="Gato">Gato</option>
-                <option value="Passaro">Pássaro</option>
-                <option value="Peixe">Peixe</option>
-                <option value="Cavalo">Cavalo</option>
-            </select>
-            <br>
-            <img id="animalImage" class="animal-img" src="" alt="Imagem do animal" style="display:none;">
-            <br>
-            <button onclick="nextStep()">Próximo</button>
+      <div class="bs-stepper-content">
+        <div id="step1" class="content">
+          <h2>Escolha um animal para criar seu amigo!</h2>
+          <label for="animal">Escolha um animal:</label>
+          <select id="animal" class="form-select">
+            <option value="cachorro">Cachorro</option>
+            <option value="gato">Gato</option>
+            <option value="passaro">Pássaro</option>
+            <option value="peixe">Peixe</option>
+            <option value="cavalo">Cavalo</option>
+          </select>
+          <button class="btn btn-success mt-3" onclick="nextStep()">Próximo</button>
         </div>
 
-        <!-- Step 2: Definir Nome e Cor -->
-        <div id="step2" class="step">
-            <h2>Personalize seu Animal</h2>
-            <input type="text" id="animalNome" placeholder="Digite um nome">
-            <input type="color" id="animalCor">
-            <br>
-            <button onclick="nextStep()">Criar Animal</button>
+        <div id="step2" class="content">
+          <h2>Agora, vamos dar um nome e uma cor para o seu novo amigo!</h2>
+          <label for="name">Nome:</label>
+          <input type="text" id="name" class="form-control">
+          <label for="color">Cor:</label>
+          <input type="color" id="color" class="form-control">
+          <button class="btn btn-success mt-3" onclick="nextStep()">Próximo</button>
+          <button class="btn btn-secondary mt-3" onclick="prevStep()">Voltar</button>
         </div>
 
-        <!-- Step 3: Interação -->
-        <div id="step3" class="step">
-            <h2>Seu Animal</h2>
-            <div class="animal-info">
-                <p class="animal-display" id="animalDisplay"></p>
-                <button onclick="fazerSom()">Ouvir Som</button>
-                <button onclick="mover()">Ver Movimento</button>
-            </div>
+        <div id="step3" class="content">
+          <h2>Está quase pronto!</h2>
+          <p id="animal-info"></p>
+          <button class="btn btn-primary" onclick="createAnimal()">Criar Animal</button>
+          <button class="btn btn-secondary" onclick="prevStep()">Voltar</button>
         </div>
+      </div>
     </div>
 
-    <script>
-        class Animal {
-            constructor(nome, cor) {
-                this._nome = nome;
-                this._cor = cor;
-            }
+    <div id="animal-container" style="display:none;">
+      <h3>Agora você pode interagir com seu novo amigo!</h3>
+      <div id="animal-interaction">
+        <button id="sound-btn" class="btn btn-info">Ouvir o som</button>
+        <button id="move-btn" class="btn btn-info">Ver o movimento</button>
+      </div>
+    </div>
+  </div>
 
-            get nome() {
-                return this._nome;
-            }
+  <script>
+    function nextStep() {
+      stepper.next();
+    }
 
-            get cor() {
-                return this._cor;
-            }
+    function prevStep() {
+      stepper.previous();
+    }
 
-            fazerSom() {
-                return "Este animal faz um som!";
-            }
+    function createAnimal() {
+      alert("Seu animal foi criado!");
+    }
 
-            mover() {
-                return "O animal está se movendo!";
-            }
-        }
+    const stepper = new bootstrap.Stepper(document.querySelector('#stepper1'));
+  </script>
 
-        class Cachorro extends Animal {
-            fazerSom() {
-                let audio = new Audio('/cachorro.m4a');
-                audio.play();
-                return `${this.nome} late: Au Au!`;
-            }
-
-            mover() {
-                return `${this.nome} está correndo! 🐾`;
-            }
-        }
-
-        class Gato extends Animal {
-            fazerSom() {
-                let audio = new Audio('/gato.m4a');
-                audio.play();
-                return `${this.nome} mia: Miau!`;
-            }
-
-            mover() {
-                return `${this.nome} está saltando! 🐱`;
-            }
-        }
-
-        class Passaro extends Animal {
-            fazerSom() {
-                let audio = new Audio('/pássaros.m4a');
-                audio.play();
-                return `${this.nome} canta: Piu Piu!`;
-            }
-
-            mover() {
-                return `${this.nome} está voando! 🕊️`;
-            }
-        }
-
-        class Peixe extends Animal {
-            fazerSom() {
-                return `${this.nome} não faz som! 🤫`;
-            }
-
-            mover() {
-                return `${this.nome} está nadando! 🐟`;
-            }
-        }
-
-        class Cavalo extends Animal {
-            fazerSom() {
-                let audio = new Audio('/cavalo.m4a');
-                audio.play();
-                return `${this.nome} relincha: Hiiiiin!`;
-            }
-
-            mover() {
-                return `${this.nome} está galopando! 🐎`;
-            }
-        }
-
-        let currentStep = 1;
-        let animalEscolhido;
-
-        function nextStep() {
-            document.getElementById(`step${currentStep}`).classList.remove("active");
-            currentStep++;
-            document.getElementById(`step${currentStep}`).classList.add("active");
-
-            if (currentStep === 3) {
-                criarAnimal();
-            }
-        }
-
-        function criarAnimal() {
-            let nome = document.getElementById("animalNome").value;
-            let cor = document.getElementById("animalCor").value;
-            let tipo = document.getElementById("animalSelect").value;
-
-            switch (tipo) {
-                case "Cachorro":
-                    animalEscolhido = new Cachorro(nome, cor);
-                    break;
-                case "Gato":
-                    animalEscolhido = new Gato(nome, cor);
-                    break;
-                case "Passaro":
-                    animalEscolhido = new Passaro(nome, cor);
-                    break;
-                case "Peixe":
-                    animalEscolhido = new Peixe(nome, cor);
-                    break;
-                case "Cavalo":
-                    animalEscolhido = new Cavalo(nome, cor);
-                    break;
-            }
-
-            document.getElementById("animalDisplay").innerHTML = 
-                `<span style="color:${cor}">${animalEscolhido.nome}</span> (${tipo}) foi criado!`;
-        }
-
-        function fazerSom() {
-            alert(animalEscolhido.fazerSom());
-        }
-
-        function mover() {
-            alert(animalEscolhido.mover());
-        }
-
-        function mostrarImagemAnimal() {
-            const animal = document.getElementById("animalSelect").value;
-            const image = document.getElementById("animalImage");
-
-            switch (animal) {
-                case "Cachorro":
-                    image.src = "https://www.example.com/cachorro.jpg"; // Substitua com a URL da imagem real
-                    break;
-                case "Gato":
-                    image.src = "https://www.example.com/gato.jpg"; // Substitua com a URL da imagem real
-                    break;
-                case "Passaro":
-                    image.src = "https://www.example.com/passaro.jpg"; // Substitua com a URL da imagem real
-                    break;
-                case "Peixe":
-                    image.src = "https://www.example.com/peixe.jpg"; // Substitua com a URL da imagem real
-                    break;
-                case "Cavalo":
-                    image.src = "https://www.example.com/cavalo.jpg"; // Substitua com a URL da imagem real
-                    break;
-            }
-
-            image.style.display = 'block';
-        }
-    </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
